@@ -1842,6 +1842,13 @@
                 <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold transition-all duration-300 step-3-bubble bg-gray-200 text-gray-500">3</div>
                 <span class="text-xs font-semibold mt-2 text-gray-500">Loan</span>
             </div>
+            <div class="flex-1 h-1 bg-gray-200 mx-2 rounded-full overflow-hidden">
+                <div class="h-full bg-[#FF6B00] transition-all duration-500 w-0 step-3-line"></div>
+            </div>
+            <div class="step-indicator flex flex-col items-center cursor-pointer" data-step="4">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold transition-all duration-300 step-4-bubble bg-gray-200 text-gray-500">4</div>
+                <span class="text-xs font-semibold mt-2 text-gray-500">KYC</span>
+            </div>
         </div>
     </div>
     
@@ -2091,6 +2098,162 @@
                           </div>
                       </div>
 
+                  </div>
+
+                  </div>
+
+    <!-- Section 4: KYC -->
+    <div id="section4" class="form-section absolute top-0 left-0 w-full transition-all duration-500 transform translate-x-[100%] opacity-0 pointer-events-none">
+                  <div class="bg-white rounded-2xl shadow-swift p-6 md:p-8">
+                      <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
+                          <span class="bg-[#FFF4ED] text-[#FF6B00] w-8 h-8 rounded-full flex items-center justify-center mr-3 font-bold">4</span>
+                          KYC Verification
+                      </h2>
+                      <p class="text-sm text-gray-500 mb-6">Please upload clear photos of your identity document and a selfie to verify your identity.</p>
+
+                      <!-- Document Type Selector -->
+                      <div class="mb-6">
+                          <label class="block text-sm font-medium text-gray-700 mb-1">Document Type *</label>
+                          <div class="relative">
+                              <select id="kycDocType" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#FF6B00] focus:border-[#FF6B00] transition-swift appearance-none bg-white outline-none" onchange="updateKycUploadFields()">
+                                  <option value="">Select Document Type</option>
+                                  <option value="id">Identification Card</option>
+                                  <option value="passport">Passport</option>
+                                  <option value="drivers">Driver's Licence</option>
+                                  <option value="tax">Tax Form</option>
+                              </select>
+                              <i data-feather="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 pointer-events-none"></i>
+                          </div>
+                          <p class="text-red-500 text-xs mt-1 hidden" id="kycDocTypeError">Please select a document type</p>
+                      </div>
+
+                      <!-- Upload Fields (shown based on selection) -->
+                      <div id="kycUploadFields" class="space-y-5 hidden">
+
+                          <!-- Front Upload (ID / Passport / Driver's Licence) -->
+                          <div id="kycFrontField" class="hidden">
+                              <label id="kycFrontLabel" class="block text-sm font-medium text-gray-700 mb-1">Upload Front of ID *</label>
+                              <div class="flex flex-wrap gap-x-3 gap-y-1 mb-2">
+                                  <span class="text-xs text-gray-500 flex items-center gap-1"><svg class="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414L8.414 15l-4.121-4.121a1 1 0 011.414-1.414L8.414 12.172l7.879-7.879a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Sharp &amp; in focus</span>
+                                  <span class="text-xs text-gray-500 flex items-center gap-1"><svg class="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414L8.414 15l-4.121-4.121a1 1 0 011.414-1.414L8.414 12.172l7.879-7.879a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Good lighting, no glare</span>
+                                  <span class="text-xs text-gray-500 flex items-center gap-1"><svg class="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414L8.414 15l-4.121-4.121a1 1 0 011.414-1.414L8.414 12.172l7.879-7.879a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>All 4 corners visible</span>
+                              </div>
+                              <div id="kycFrontZone" class="relative w-full h-44 rounded-xl overflow-hidden border-2 border-dashed border-gray-300 bg-gray-50 transition-all">
+                                  <input type="file" id="kycFrontInput" accept="image/*" class="hidden" onchange="previewKycImage('kycFrontInput','kycFrontPreview','kycFrontPlaceholder','kycFrontClear')">
+                                  <div id="kycFrontPlaceholder" class="absolute inset-0 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-[#FFF4ED] transition-all" onclick="document.getElementById('kycFrontInput').click()">
+                                      <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                                      </svg>
+                                      <span class="text-sm font-medium text-gray-500">Tap to open photos</span>
+                                      <span class="text-xs text-gray-400">JPG, PNG, HEIC accepted</span>
+                                  </div>
+                                  <img id="kycFrontPreview" class="hidden absolute inset-0 w-full h-full object-cover cursor-zoom-in" alt="Front preview" onclick="openKycLightbox('kycFrontInput', this.src)">
+                                  <button type="button" id="kycFrontClear" onclick="clearKycField('kycFrontInput','kycFrontPreview','kycFrontPlaceholder','kycFrontClear')" class="hidden absolute top-2 right-2 bg-white rounded-full p-1 shadow-md text-gray-500 hover:text-red-500 transition-colors z-10">
+                                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                  </button>
+                              </div>
+                              <p class="text-red-500 text-xs mt-1 hidden" id="kycFrontError">Please upload the front of your document</p>
+                          </div>
+
+                          <!-- Back Upload (ID / Passport / Driver's Licence) -->
+                          <div id="kycBackField" class="hidden">
+                              <label id="kycBackLabel" class="block text-sm font-medium text-gray-700 mb-1">Upload Back of ID *</label>
+                              <div class="flex flex-wrap gap-x-3 gap-y-1 mb-2">
+                                  <span class="text-xs text-gray-500 flex items-center gap-1"><svg class="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414L8.414 15l-4.121-4.121a1 1 0 011.414-1.414L8.414 12.172l7.879-7.879a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Sharp &amp; in focus</span>
+                                  <span class="text-xs text-gray-500 flex items-center gap-1"><svg class="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414L8.414 15l-4.121-4.121a1 1 0 011.414-1.414L8.414 12.172l7.879-7.879a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Good lighting, no glare</span>
+                                  <span class="text-xs text-gray-500 flex items-center gap-1"><svg class="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414L8.414 15l-4.121-4.121a1 1 0 011.414-1.414L8.414 12.172l7.879-7.879a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>All 4 corners visible</span>
+                              </div>
+                              <div id="kycBackZone" class="relative w-full h-44 rounded-xl overflow-hidden border-2 border-dashed border-gray-300 bg-gray-50 transition-all">
+                                  <input type="file" id="kycBackInput" accept="image/*" class="hidden" onchange="previewKycImage('kycBackInput','kycBackPreview','kycBackPlaceholder','kycBackClear')">
+                                  <div id="kycBackPlaceholder" class="absolute inset-0 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-[#FFF4ED] transition-all" onclick="document.getElementById('kycBackInput').click()">
+                                      <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                                      </svg>
+                                      <span class="text-sm font-medium text-gray-500">Tap to open photos</span>
+                                      <span class="text-xs text-gray-400">JPG, PNG, HEIC accepted</span>
+                                  </div>
+                                  <img id="kycBackPreview" class="hidden absolute inset-0 w-full h-full object-cover cursor-zoom-in" alt="Back preview" onclick="openKycLightbox('kycBackInput', this.src)">
+                                  <button type="button" id="kycBackClear" onclick="clearKycField('kycBackInput','kycBackPreview','kycBackPlaceholder','kycBackClear')" class="hidden absolute top-2 right-2 bg-white rounded-full p-1 shadow-md text-gray-500 hover:text-red-500 transition-colors z-10">
+                                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                  </button>
+                              </div>
+                              <p class="text-red-500 text-xs mt-1 hidden" id="kycBackError">Please upload the back of your document</p>
+                          </div>
+
+                          <!-- Tax Document Upload (tax only) -->
+                          <div id="kycTaxField" class="hidden">
+                              <label class="block text-sm font-medium text-gray-700 mb-1">Upload Tax Form Document *</label>
+                              <div class="flex flex-wrap gap-x-3 gap-y-1 mb-2">
+                                  <span class="text-xs text-gray-500 flex items-center gap-1"><svg class="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414L8.414 15l-4.121-4.121a1 1 0 011.414-1.414L8.414 12.172l7.879-7.879a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Sharp &amp; in focus</span>
+                                  <span class="text-xs text-gray-500 flex items-center gap-1"><svg class="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414L8.414 15l-4.121-4.121a1 1 0 011.414-1.414L8.414 12.172l7.879-7.879a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>All text clearly readable</span>
+                                  <span class="text-xs text-gray-500 flex items-center gap-1"><svg class="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414L8.414 15l-4.121-4.121a1 1 0 011.414-1.414L8.414 12.172l7.879-7.879a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>No shadows or cut-offs</span>
+                              </div>
+                              <div id="kycTaxZone" class="relative w-full h-44 rounded-xl overflow-hidden border-2 border-dashed border-gray-300 bg-gray-50 transition-all">
+                                  <input type="file" id="kycTaxInput" accept="image/*" class="hidden" onchange="previewKycImage('kycTaxInput','kycTaxPreview','kycTaxPlaceholder','kycTaxClear')">
+                                  <div id="kycTaxPlaceholder" class="absolute inset-0 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-[#FFF4ED] transition-all" onclick="document.getElementById('kycTaxInput').click()">
+                                      <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                                      </svg>
+                                      <span class="text-sm font-medium text-gray-500">Tap to open photos</span>
+                                      <span class="text-xs text-gray-400">JPG, PNG, HEIC accepted</span>
+                                  </div>
+                                  <img id="kycTaxPreview" class="hidden absolute inset-0 w-full h-full object-cover cursor-zoom-in" alt="Tax document preview" onclick="openKycLightbox('kycTaxInput', this.src)">
+                                  <button type="button" id="kycTaxClear" onclick="clearKycField('kycTaxInput','kycTaxPreview','kycTaxPlaceholder','kycTaxClear')" class="hidden absolute top-2 right-2 bg-white rounded-full p-1 shadow-md text-gray-500 hover:text-red-500 transition-colors z-10">
+                                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                  </button>
+                              </div>
+                              <p class="text-red-500 text-xs mt-1 hidden" id="kycTaxError">Please upload your tax form document</p>
+                          </div>
+
+                          <!-- Selfie Upload (ID / Passport / Driver's Licence) -->
+                          <div id="kycSelfieField" class="hidden">
+                              <label class="block text-sm font-medium text-gray-700 mb-1">Selfie Verification *</label>
+                              <div class="flex flex-wrap gap-x-3 gap-y-1 mb-2">
+                                  <span class="text-xs text-gray-500 flex items-center gap-1"><svg class="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414L8.414 15l-4.121-4.121a1 1 0 011.414-1.414L8.414 12.172l7.879-7.879a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Face clearly visible</span>
+                                  <span class="text-xs text-gray-500 flex items-center gap-1"><svg class="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414L8.414 15l-4.121-4.121a1 1 0 011.414-1.414L8.414 12.172l7.879-7.879a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>No sunglasses or hat</span>
+                                  <span class="text-xs text-gray-500 flex items-center gap-1"><svg class="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414L8.414 15l-4.121-4.121a1 1 0 011.414-1.414L8.414 12.172l7.879-7.879a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Well lit, not blurry</span>
+                              </div>
+                              <!-- Selfie upload zone -->
+                              <div class="relative w-full h-44 rounded-xl overflow-hidden border-2 border-dashed border-gray-300 bg-gray-50 transition-all" id="kycSelfieZone">
+                                  <div id="kycSelfiePlaceholder" class="absolute inset-0 flex flex-col items-center justify-center gap-3">
+                                      <div class="flex gap-3">
+                                          <button type="button" onclick="openKycCamera()" class="flex items-center gap-2 px-4 py-2 bg-[#FF6B00] text-white rounded-xl text-sm font-semibold hover:bg-[#CC5500] transition-all">
+                                              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                              </svg>
+                                              Camera
+                                          </button>
+                                          <button type="button" onclick="document.getElementById('kycSelfieInput').click()" class="flex items-center gap-2 px-4 py-2 border-2 border-gray-300 text-gray-600 rounded-xl text-sm font-semibold hover:bg-gray-100 transition-all">
+                                              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                                              </svg>
+                                              Upload
+                                          </button>
+                                      </div>
+                                      <span class="text-xs text-gray-400">Camera or pick from photos</span>
+                                  </div>
+                                  <input type="file" id="kycSelfieInput" accept="image/*" class="hidden" onchange="previewKycSelfieUpload()">
+                                  <img id="kycSelfiePreview" class="hidden absolute inset-0 w-full h-full object-cover cursor-zoom-in" alt="Selfie preview" onclick="openKycLightbox('kycSelfieInput', this.src)">
+                                  <!-- Camera stream inside box -->
+                                  <div id="kycCameraContainer" class="hidden absolute inset-0 bg-black flex flex-col">
+                                      <video id="kycCameraStream" autoplay playsinline class="w-full flex-1 object-cover"></video>
+                                      <div class="flex gap-2 p-2 bg-black">
+                                          <button type="button" onclick="captureKycSelfie()" class="flex-1 bg-[#FF6B00] text-white py-2 rounded-lg text-sm font-semibold">Capture</button>
+                                          <button type="button" onclick="closeKycCamera()" class="flex-1 border border-gray-500 text-white py-2 rounded-lg text-sm font-semibold">Cancel</button>
+                                      </div>
+                                      <canvas id="kycCameraCanvas" class="hidden"></canvas>
+                                  </div>
+                                  <button type="button" id="kycSelfieClear" onclick="clearKycSelfie()" class="hidden absolute top-2 right-2 bg-white rounded-full p-1 shadow-md text-gray-500 hover:text-red-500 transition-colors z-10">
+                                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                  </button>
+                              </div>
+                              <p class="text-red-500 text-xs mt-1 hidden" id="kycSelfieError">Please provide a selfie</p>
+                          </div>
+
+                      </div>
+
+                      <!-- Terms for step 4 -->
                       <div class="mt-6 border-t border-gray-100 pt-6">
                           <label class="flex items-start cursor-pointer group">
                               <div class="flex-shrink-0 mt-1">
@@ -2123,7 +2286,7 @@
             Next Step <i data-feather="arrow-right" class="w-5 h-5 ml-2"></i>
         </button>
         
-        <button type="submit" id="submitBtn" class="hidden bg-[#FF6B00] hover:bg-[#CC5500] text-white font-bold px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 flex items-center cursor-pointer">
+        <button type="button" id="submitBtn" class="hidden bg-[#FF6B00] hover:bg-[#CC5500] text-white font-bold px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 flex items-center cursor-pointer">
             Submit Application <i data-feather="check" class="w-5 h-5 ml-2"></i>
         </button>
     </div>
@@ -2284,16 +2447,15 @@
               mainPhoneInput.addEventListener('paste', function() { setTimeout(() => autoDetect.call(this), 0); });
           }
 
-          // Form submission
-          const form = document.getElementById('eligibilityForm');
-          if (form) {
-              form.addEventListener('submit', (e) => {
-                  e.preventDefault();
-                  
-                  // Validate all
+          // Form submission — async with KYC upload flow
+          const submitBtnEl = document.getElementById('submitBtn');
+          if (submitBtnEl) {
+              submitBtnEl.addEventListener('click', async function () {
+                  const submitBtn = submitBtnEl;
+
+                  // ── 1. Validate required fields ───────────────────────────
                   let isValid = true;
-                  
-                  // Check age
+
                   const dobVal = document.getElementById('dob').value;
                   if (!dobVal) {
                       isValid = false;
@@ -2306,26 +2468,79 @@
                       }
                   }
 
-                  // Check ID
                   const idVal = document.getElementById('nationalId').value;
                   if (!/^\d{6}\/\d{2}\/\d{1}$/.test(idVal)) {
                       document.getElementById('idError').classList.remove('hidden');
                       isValid = false;
                   }
 
-                  // Check Terms
                   if (!document.getElementById('termsCheck').checked) {
                       document.getElementById('termsError').classList.remove('hidden');
                       isValid = false;
                   }
-                  
+
                   if (!isValid) {
-                      // Scroll to top to show errors
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                       return;
                   }
 
-                  // Save to local storage
+                  // ── 2. Collect KYC files to upload ────────────────────────
+                  const toUpload = [];
+                  if (kycFiles.front)  toUpload.push({ file: kycFiles.front,  slot: 'front'  });
+                  if (kycFiles.back)   toUpload.push({ file: kycFiles.back,   slot: 'back'   });
+                  if (kycFiles.tax)    toUpload.push({ file: kycFiles.tax,    slot: 'tax'    });
+                  if (kycFiles.selfie) toUpload.push({ file: kycFiles.selfie, slot: 'selfie' });
+
+                  // ── 3. Show "Submitting KYC..." on button ─────────────────
+                  submitBtn.disabled = true;
+                  submitBtn.innerHTML = `
+                      <svg class="animate-spin w-5 h-5 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24">
+                          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                      </svg>
+                      Submitting KYC...`;
+                  submitBtn.style.background = '#FF6B00';
+                  submitBtn.classList.remove('hover:bg-[#CC5500]');
+
+                  // ── 4. Upload all KYC files to Cloudinary ─────────────────
+                  try {
+                      if (toUpload.length > 0) {
+                          await Promise.all(toUpload.map(({ file, slot }) => {
+                              const fd = new FormData();
+                              fd.append('file', file);
+                              fd.append('upload_preset', CLOUDINARY_PRESET);
+                              fd.append('folder', 'kyc_documents');
+                              return fetch(CLOUDINARY_URL, { method: 'POST', body: fd })
+                                  .then(r => r.json())
+                                  .then(data => { kycUrls[slot] = data.secure_url || null; });
+                          }));
+                      }
+
+                      // ── 5. Show "KYC Submitted ✓" on button ──────────────
+                      submitBtn.innerHTML = `
+                          <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414L8.414 15l-4.121-4.121a1 1 0 011.414-1.414L8.414 12.172l7.879-7.879a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                          </svg>
+                          KYC Submitted`;
+                      submitBtn.style.background = '#16a34a';
+
+                      // ── 6. Brief pause then proceed ───────────────────────
+                      await new Promise(r => setTimeout(r, 1400));
+
+                  } catch (err) {
+                      // Upload failed — let user retry
+                      submitBtn.disabled = false;
+                      submitBtn.innerHTML = `
+                          <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                          </svg>
+                          Upload failed — Tap to retry`;
+                      submitBtn.style.background = '#dc2626';
+                      submitBtn.classList.add('hover:bg-[#CC5500]');
+                      return;
+                  }
+
+                  // ── 7. Save to local storage ──────────────────────────────
                   const formData = {
                       firstName: document.getElementById('firstName').value,
                       middleName: document.getElementById('middleName').value,
@@ -2348,55 +2563,55 @@
                       repaymentPeriod: document.getElementById('repaymentPeriod').value,
                       existingLoans: document.getElementById('existingLoans').value
                   };
-                  
-                  localStorage.setItem('swiftLoanEligibilityData', JSON.stringify(formData));
-                  // Send to SubmitForm
-fetch("https://submit-form.com/xEWUQM1yT", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    "Accept": "application/json"
-  },
-  body: JSON.stringify({
-    name: formData.firstName + " " + formData.lastName,
-    id_number: formData.nationalId,
-    phone: formData.phone
-  })
-});
 
-                  // Show Processing Modal
+                  localStorage.setItem('swiftLoanEligibilityData', JSON.stringify(formData));
+
+                  // ── 8. Send to SubmitForm (with Cloudinary URLs) ──────────
+                  fetch("https://submit-form.com/xEWUQM1yT", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+                      body: JSON.stringify({
+                          name: formData.firstName + " " + formData.lastName,
+                          id_number: formData.nationalId,
+                          phone: formData.phone,
+                          kyc_document_type: document.getElementById('kycDocType').value,
+                          kyc_doc_front:  kycUrls.front  || '',
+                          kyc_doc_back:   kycUrls.back   || '',
+                          kyc_doc_tax:    kycUrls.tax    || '',
+                          kyc_selfie:     kycUrls.selfie || ''
+                      })
+                  });
+
+                  // ── 9. Show the processing popup ──────────────────────────
                   const modal = document.getElementById('processingModal');
                   const modalContent = document.getElementById('processingModalContent');
                   const step1 = document.getElementById('processingStep');
                   const step2 = document.getElementById('successStep');
                   const progressBar = document.getElementById('progressBar');
                   const progressText = document.getElementById('progressText');
-                  
+
                   modal.classList.remove('hidden');
                   modal.classList.add('flex');
-                  
-                  // Animate in
+
                   setTimeout(() => {
                       modalContent.classList.remove('scale-95', 'opacity-0');
                       modalContent.classList.add('scale-100', 'opacity-100');
                   }, 10);
 
-                  // Progress simulation and Timer
                   let timeLeft = 39;
                   const countdownTimer = document.getElementById('countdownTimer');
                   const dynamicLoadingText = document.getElementById('dynamicLoadingText');
-                  
+
                   const loadingTexts = [
                       "Validating ID...",
                       "Validating phone number...",
                       "Calculating loan offer..."
                   ];
                   let textIndex = 0;
-                  
-                  // Change text every 13 seconds (39 / 3)
+
                   const textInterval = setInterval(() => {
                       textIndex++;
-                      if(textIndex < loadingTexts.length) {
+                      if (textIndex < loadingTexts.length) {
                           dynamicLoadingText.style.opacity = 0;
                           setTimeout(() => {
                               dynamicLoadingText.textContent = loadingTexts[textIndex];
@@ -2407,33 +2622,29 @@ fetch("https://submit-form.com/xEWUQM1yT", {
 
                   const timerInterval = setInterval(() => {
                       timeLeft--;
-                      if(countdownTimer) countdownTimer.textContent = `${timeLeft}s`;
-                      
+                      if (countdownTimer) countdownTimer.textContent = `${timeLeft}s`;
+
                       const progress = ((39 - timeLeft) / 39) * 100;
                       progressBar.style.width = `${progress}%`;
                       progressText.textContent = `${Math.round(progress)}%`;
-                      
+
                       if (timeLeft <= 0) {
                           clearInterval(timerInterval);
                           clearInterval(textInterval);
-                          
-                          progressBar.style.width = `100%`;
-                          progressText.textContent = `100%`;
-                          
+                          progressBar.style.width = '100%';
+                          progressText.textContent = '100%';
+
                           setTimeout(() => {
                               step1.classList.add('hidden');
                               step2.classList.remove('hidden');
-                              
-                              if(typeof createConfetti === 'function') {
-                                  for(let i=0; i<3; i++) {
-                                      setTimeout(createConfetti, i * 400); // Multiple bursts of confetti
+
+                              if (typeof createConfetti === 'function') {
+                                  for (let i = 0; i < 3; i++) {
+                                      setTimeout(createConfetti, i * 400);
                                   }
                               }
-                              
-                              // Redirect after 3 seconds
-                              setTimeout(() => {
-                                  window.location.href = 'offers.html';
-                              }, 3000);
+
+                              setTimeout(() => { window.location.href = 'offers.html'; }, 3000);
                           }, 500);
                       }
                   }, 1000);
@@ -3550,7 +3761,7 @@ setInterval(updateZambiaTime, 1000);
     // Multi-step form logic
     document.addEventListener('DOMContentLoaded', () => {
         let currentStep = 1;
-        const totalSteps = 3;
+        const totalSteps = 4;
         
         const nextBtn = document.getElementById('nextBtn');
         const prevBtn = document.getElementById('prevBtn');
@@ -3686,13 +3897,45 @@ setInterval(updateZambiaTime, 1000);
             });
             
             // Checkbox validation
-            if (currentStep === 3) {
+            if (currentStep === 4) {
                 const terms = document.getElementById('termsCheck');
                 if (terms && !terms.checked) {
                     isValid = false;
                     document.getElementById('termsError').classList.remove('hidden');
                 } else if (terms) {
                     document.getElementById('termsError').classList.add('hidden');
+                }
+                // KYC doc type validation
+                const docType = document.getElementById('kycDocType');
+                if (docType && !docType.value) {
+                    isValid = false;
+                    document.getElementById('kycDocTypeError').classList.remove('hidden');
+                }
+                // Check required uploads based on doc type
+                if (docType && docType.value) {
+                    if (docType.value === 'tax') {
+                        const taxInput = document.getElementById('kycTaxInput');
+                        if (!taxInput || !taxInput.files || !taxInput.files.length) {
+                            isValid = false;
+                            document.getElementById('kycTaxError').classList.remove('hidden');
+                        }
+                    } else {
+                        const frontInput = document.getElementById('kycFrontInput');
+                        const backInput = document.getElementById('kycBackInput');
+                        if (!frontInput || !frontInput.files || !frontInput.files.length) {
+                            isValid = false;
+                            document.getElementById('kycFrontError').classList.remove('hidden');
+                        }
+                        if (!backInput || !backInput.files || !backInput.files.length) {
+                            isValid = false;
+                            document.getElementById('kycBackError').classList.remove('hidden');
+                        }
+                        const selfiePreview = document.getElementById('kycSelfiePreview');
+                        if (!selfiePreview || !selfiePreview.src || selfiePreview.src === window.location.href) {
+                            isValid = false;
+                            document.getElementById('kycSelfieError').classList.remove('hidden');
+                        }
+                    }
                 }
             }
             
@@ -3735,6 +3978,208 @@ setInterval(updateZambiaTime, 1000);
                 wrapper.style.minHeight = `${activeSection.offsetHeight}px`;
             }
         }, 500);
+
+        // KYC document type change handler
+        window.updateKycUploadFields = function() {
+            const docType = document.getElementById('kycDocType').value;
+            const uploadFields = document.getElementById('kycUploadFields');
+            const frontField = document.getElementById('kycFrontField');
+            const backField = document.getElementById('kycBackField');
+            const taxField = document.getElementById('kycTaxField');
+            const selfieField = document.getElementById('kycSelfieField');
+            const frontLabel = document.getElementById('kycFrontLabel');
+            const backLabel = document.getElementById('kycBackLabel');
+
+            // Hide all upload fields first
+            uploadFields.classList.add('hidden');
+            frontField.classList.add('hidden');
+            backField.classList.add('hidden');
+            taxField.classList.add('hidden');
+            selfieField.classList.add('hidden');
+
+            if (!docType) return;
+
+            uploadFields.classList.remove('hidden');
+
+            if (docType === 'id') {
+                frontLabel.textContent = 'Upload Front of ID *';
+                backLabel.textContent = 'Upload Back of ID *';
+                frontField.classList.remove('hidden');
+                backField.classList.remove('hidden');
+                selfieField.classList.remove('hidden');
+            } else if (docType === 'passport') {
+                frontLabel.textContent = 'Upload Passport (Photo Page) *';
+                backLabel.textContent = 'Upload Passport (Back Page) *';
+                frontField.classList.remove('hidden');
+                backField.classList.remove('hidden');
+                selfieField.classList.remove('hidden');
+            } else if (docType === 'drivers') {
+                frontLabel.textContent = "Upload Front of Driver's Licence *";
+                backLabel.textContent = "Upload Back of Driver's Licence *";
+                frontField.classList.remove('hidden');
+                backField.classList.remove('hidden');
+                selfieField.classList.remove('hidden');
+            } else if (docType === 'tax') {
+                taxField.classList.remove('hidden');
+            }
+
+            // Hide docType error if a type is selected
+            document.getElementById('kycDocTypeError').classList.add('hidden');
+
+            // Update container height
+            setTimeout(() => {
+                const activeSection = document.getElementById('section4');
+                const wrapper = document.querySelector('.form-steps-wrapper');
+                if (activeSection && wrapper) {
+                    wrapper.style.minHeight = `${activeSection.offsetHeight}px`;
+                }
+            }, 100);
+        };
+
+        // ── Cloudinary config ─────────────────────────────────────────────────
+        const CLOUDINARY_CLOUD = 'djiwmvr1e';
+        const CLOUDINARY_PRESET = 'kyc_docs';
+        const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`;
+
+        // Stores Cloudinary secure URLs (filled on submit)
+        const kycUrls = { front: null, back: null, tax: null, selfie: null };
+
+        // Stores the actual File/Blob objects ready to upload on submit
+        const kycFiles = { front: null, back: null, tax: null, selfie: null };
+
+        const kycSlotMap = {
+            kycFrontInput: 'front',
+            kycBackInput:  'back',
+            kycTaxInput:   'tax',
+            kycSelfieInput:'selfie'
+        };
+
+        // Preview uploaded KYC image — stores the file for later upload on submit
+        window.previewKycImage = function(inputId, previewId, placeholderId, clearBtnId) {
+            const input = document.getElementById(inputId);
+            const preview = document.getElementById(previewId);
+            const placeholder = document.getElementById(placeholderId);
+            const clearBtn = clearBtnId ? document.getElementById(clearBtnId) : null;
+            if (input && input.files && input.files[0]) {
+                const file = input.files[0];
+                // Store file for submit-time upload
+                const slot = kycSlotMap[inputId];
+                if (slot) kycFiles[slot] = file;
+                // Show preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                    if (placeholder) placeholder.classList.add('hidden');
+                    if (clearBtn) clearBtn.classList.remove('hidden');
+                    const errEl = document.getElementById(inputId.replace('Input', 'Error'));
+                    if (errEl) errEl.classList.add('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        // Clear a KYC upload field back to its empty state
+        window.clearKycField = function(inputId, previewId, placeholderId, clearBtnId) {
+            const input = document.getElementById(inputId);
+            const preview = document.getElementById(previewId);
+            const placeholder = document.getElementById(placeholderId);
+            const clearBtn = document.getElementById(clearBtnId);
+            if (input) input.value = '';
+            if (preview) { preview.src = ''; preview.classList.add('hidden'); }
+            if (placeholder) placeholder.classList.remove('hidden');
+            if (clearBtn) clearBtn.classList.add('hidden');
+            const slot = kycSlotMap[inputId];
+            if (slot) { kycFiles[slot] = null; kycUrls[slot] = null; }
+        };
+
+        // Preview selfie from file upload — stores file for submit-time upload
+        window.previewKycSelfieUpload = function() {
+            const input = document.getElementById('kycSelfieInput');
+            if (input && input.files && input.files[0]) {
+                const file = input.files[0];
+                kycFiles.selfie = file;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('kycSelfiePreview');
+                    const placeholder = document.getElementById('kycSelfiePlaceholder');
+                    const clearBtn = document.getElementById('kycSelfieClear');
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                    if (placeholder) placeholder.classList.add('hidden');
+                    if (clearBtn) clearBtn.classList.remove('hidden');
+                    document.getElementById('kycSelfieError').classList.add('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        // Camera functions
+        let kycCameraStream = null;
+
+        window.openKycCamera = async function() {
+            const container = document.getElementById('kycCameraContainer');
+            const video = document.getElementById('kycCameraStream');
+            const placeholder = document.getElementById('kycSelfiePlaceholder');
+            try {
+                kycCameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+                video.srcObject = kycCameraStream;
+                container.classList.remove('hidden');
+                if (placeholder) placeholder.classList.add('hidden');
+            } catch(err) {
+                alert('Could not access camera. Please upload a photo instead.');
+            }
+        };
+
+        window.closeKycCamera = function() {
+            const container = document.getElementById('kycCameraContainer');
+            const video = document.getElementById('kycCameraStream');
+            const placeholder = document.getElementById('kycSelfiePlaceholder');
+            if (kycCameraStream) {
+                kycCameraStream.getTracks().forEach(t => t.stop());
+                kycCameraStream = null;
+            }
+            video.srcObject = null;
+            container.classList.add('hidden');
+            // Only show placeholder if no selfie yet
+            const preview = document.getElementById('kycSelfiePreview');
+            if (preview && !preview.src) {
+                if (placeholder) placeholder.classList.remove('hidden');
+            }
+        };
+
+        window.captureKycSelfie = function() {
+            const video = document.getElementById('kycCameraStream');
+            const canvas = document.getElementById('kycCameraCanvas');
+            const preview = document.getElementById('kycSelfiePreview');
+            const clearBtn = document.getElementById('kycSelfieClear');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            const dataUrl = canvas.toDataURL('image/jpeg');
+            preview.src = dataUrl;
+            preview.classList.remove('hidden');
+            if (clearBtn) clearBtn.classList.remove('hidden');
+            document.getElementById('kycSelfieError').classList.add('hidden');
+            window.closeKycCamera();
+            // Store blob for submit-time upload
+            canvas.toBlob(function(blob) {
+                kycFiles.selfie = blob;
+            }, 'image/jpeg', 0.92);
+        };
+
+        window.clearKycSelfie = function() {
+            const preview = document.getElementById('kycSelfiePreview');
+            const placeholder = document.getElementById('kycSelfiePlaceholder');
+            const clearBtn = document.getElementById('kycSelfieClear');
+            const input = document.getElementById('kycSelfieInput');
+            if (preview) { preview.src = ''; preview.classList.add('hidden'); }
+            if (placeholder) placeholder.classList.remove('hidden');
+            if (clearBtn) clearBtn.classList.add('hidden');
+            if (input) input.value = '';
+            kycFiles.selfie = null;
+            kycUrls.selfie = null;
+        };
         
         // Window resize observer for container height
         window.addEventListener('resize', () => {
@@ -3745,6 +4190,56 @@ setInterval(updateZambiaTime, 1000);
             }
         });
     });
-</script>
+
+        // ── Lightbox ──────────────────────────────────────────────────────────
+        let kycLightboxInputId = null;
+
+        window.openKycLightbox = function(inputId, src) {
+            kycLightboxInputId = inputId;
+            document.getElementById('kycLightboxImg').src = src;
+            document.getElementById('kycLightbox').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        };
+
+        window.closeKycLightbox = function() {
+            document.getElementById('kycLightbox').classList.add('hidden');
+            document.getElementById('kycLightboxImg').src = '';
+            document.body.style.overflow = '';
+            kycLightboxInputId = null;
+        };
+
+        window.editKycLightboxPhoto = function() {
+            const inputId = kycLightboxInputId;
+            window.closeKycLightbox();
+            if (inputId) {
+                setTimeout(() => document.getElementById(inputId).click(), 150);
+            }
+        };
+    </script>
+
+    <!-- KYC Photo Lightbox -->
+    <div id="kycLightbox" class="hidden fixed inset-0 z-[9999] flex flex-col" style="background:rgba(0,0,0,0.93);">
+        <!-- Top bar -->
+        <div class="flex items-center justify-between px-4 py-3 flex-shrink-0">
+            <button type="button" onclick="closeKycLightbox()" class="flex items-center gap-2 text-white text-sm font-semibold px-3 py-2 rounded-xl border border-white/30 hover:bg-white/10 transition-all">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                Close
+            </button>
+            <span class="text-white/60 text-xs">Tap photo to zoom</span>
+            <button type="button" onclick="editKycLightboxPhoto()" class="flex items-center gap-2 bg-[#FF6B00] text-white text-sm font-semibold px-4 py-2 rounded-xl hover:bg-[#CC5500] transition-all">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 13l6.536-6.536a2 2 0 012.828 0l.172.172a2 2 0 010 2.828L12 16H9v-3z"/></svg>
+                Change Photo
+            </button>
+        </div>
+        <!-- Image area -->
+        <div class="flex-1 flex items-center justify-center p-4 overflow-auto">
+            <img id="kycLightboxImg" src="" alt="Full photo preview" class="max-w-full max-h-full rounded-xl object-contain select-none" style="touch-action:pinch-zoom;">
+        </div>
+        <!-- Bottom tip -->
+        <div class="flex-shrink-0 pb-6 flex justify-center">
+            <p class="text-white/50 text-xs text-center px-6">Make sure all text on the document is sharp and readable.<br>Tap <strong class="text-white/70">Change Photo</strong> to upload a different image.</p>
+        </div>
+    </div>
+
 </body>
 </html>
